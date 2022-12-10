@@ -1,8 +1,12 @@
 import 'package:diary_app/base/base_utility.dart';
 import 'package:diary_app/base/firebase/auth.dart';
+import 'package:diary_app/components/login_register_button.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 import 'package:diary_app/ui/view/calendar_page_view.dart';
+import 'package:diary_app/ui/view/register_page_view.dart';
+import 'package:diary_app/ui/viewmodel/diary_page_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPageView extends StatefulWidget {
   const LoginPageView({super.key});
@@ -13,10 +17,26 @@ class LoginPageView extends StatefulWidget {
 
 class _LoginPageViewState extends State<LoginPageView> {
   TextFieldModel model = TextFieldModel(350, 50, 1);
+  DiaryPageViewmodel viewmodel = DiaryPageViewmodel();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String login = "♡ Welcome ♡";
+  @override
+  void initState() {
+    super.initState();
+    prepareLocalStorage();
+  }
+
+  Future<void> prepareLocalStorage() async {
+    viewmodel.localStorage = await SharedPreferences.getInstance();
+    nameController.text = viewmodel.localStorage.getString("name") ?? "";
+    emailController.text = viewmodel.localStorage.getString("email") ?? "";
+    passwordController.text =
+        viewmodel.localStorage.getString("password") ?? "";
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +58,32 @@ class _LoginPageViewState extends State<LoginPageView> {
             buildNameTextField(emailController, "E-mail"),
             const SizedBox(height: 20),
             buildNameTextField(passwordController, "Password"),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 25.0),
+                child: TextButton(
+                    child: Text(
+                      "Don't you have an account?",
+                      style: TextStyleUtility.pageHeadlineStyle
+                          .copyWith(color: ColorUtility.blueGrey, fontSize: 14),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPageView()),
+                      );
+                    }),
+              ),
+            ),
             const SizedBox(height: 20),
-            loginButton(nameController, emailController, passwordController)
+            LoginRegisterButton(
+                type: 1,
+                nameController: nameController,
+                emailController: emailController,
+                passwordController: passwordController)
+            //loginButton(nameController, emailController, passwordController)
           ],
         ),
       ),
@@ -61,6 +105,8 @@ class _LoginPageViewState extends State<LoginPageView> {
                   password: passwordController.text,
                   context: context) ==
               1) {
+            viewmodel.dataSave(
+                nameController, emailController, passwordController);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CalendarPageView()),
