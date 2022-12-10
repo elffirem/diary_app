@@ -1,5 +1,6 @@
 import 'package:diary_app/base/base_utility.dart';
 import 'package:diary_app/base/firebase/auth.dart';
+import 'package:diary_app/base/shared/preferences_manager.dart';
 import 'package:diary_app/components/login_register_button.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 import 'package:diary_app/ui/view/calendar_page_view.dart';
@@ -28,12 +29,11 @@ class _LoginPageViewState extends State<LoginPageView> {
     prepareLocalStorage();
   }
 
-  Future<void> prepareLocalStorage() async {
-    viewmodel.localStorage = await SharedPreferences.getInstance();
-    nameController.text = viewmodel.localStorage.getString("name") ?? "";
-    emailController.text = viewmodel.localStorage.getString("email") ?? "";
-    passwordController.text =
-        viewmodel.localStorage.getString("password") ?? "";
+  void prepareLocalStorage() {
+    print(PreferencesManager.instance.getString("name"));
+    nameController.text = PreferencesManager.instance.getString("name") ?? "";
+    emailController.text = PreferencesManager.instance.getString("email") ?? "";
+    passwordController.text = PreferencesManager.instance.getString("password") ?? "";
     setState(() {});
   }
 
@@ -65,24 +65,18 @@ class _LoginPageViewState extends State<LoginPageView> {
                 child: TextButton(
                     child: Text(
                       "Don't you have an account?",
-                      style: TextStyleUtility.pageHeadlineStyle
-                          .copyWith(color: ColorUtility.blueGrey, fontSize: 14),
+                      style: TextStyleUtility.pageHeadlineStyle.copyWith(color: ColorUtility.blueGrey, fontSize: 14),
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPageView()),
+                        MaterialPageRoute(builder: (context) => const RegisterPageView()),
                       );
                     }),
               ),
             ),
             const SizedBox(height: 20),
-            LoginRegisterButton(
-                type: 1,
-                nameController: nameController,
-                emailController: emailController,
-                passwordController: passwordController)
+            LoginRegisterButton(type: 1, nameController: nameController, emailController: emailController, passwordController: passwordController)
             //loginButton(nameController, emailController, passwordController)
           ],
         ),
@@ -90,31 +84,19 @@ class _LoginPageViewState extends State<LoginPageView> {
     );
   }
 
-  Widget loginButton(
-      TextEditingController nameController,
-      TextEditingController emailController,
-      TextEditingController passwordController) {
+  Widget loginButton(TextEditingController nameController, TextEditingController emailController, TextEditingController passwordController) {
     return InkWell(
       onTap: () async {
-        if (emailController.text.isNotEmpty &&
-            nameController.text.isNotEmpty &&
-            passwordController.text.isNotEmpty) {
-          if (await FirebaseAuthManager.instance.register(
-                  name: nameController.text,
-                  email: emailController.text,
-                  password: passwordController.text,
-                  context: context) ==
-              1) {
-            viewmodel.dataSave(
-                nameController, emailController, passwordController);
+        if (emailController.text.isNotEmpty && nameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+          if (await FirebaseAuthManager.instance.register(name: nameController.text, email: emailController.text, password: passwordController.text, context: context) == 1) {
+            viewmodel.dataSave(nameController.text, emailController.text, passwordController.text);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CalendarPageView()),
             );
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Please fill all blanks correctly")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all blanks correctly")));
         }
       },
       child: Container(

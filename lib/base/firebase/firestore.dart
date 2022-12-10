@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//taqanarslan
 class FirestoreManager {
   static FirestoreManager? _instance;
   static FirestoreManager get instance {

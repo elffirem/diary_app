@@ -1,13 +1,11 @@
+import 'package:diary_app/base/shared/preferences_manager.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
-import 'package:flutter/cupertino.dart';
 
 class DiaryPageViewmodel {
   TextFieldModel model = TextFieldModel(350, 50, 1);
-  var localStorage;
-  void dataSave(TextEditingController name, TextEditingController email,
-      TextEditingController password) {
-    localStorage.setString("name", name.text);
-    localStorage.setString("email", email.text);
-    localStorage.setString("password", password.text);
+  void dataSave(String name, String email, String password) {
+    PreferencesManager.instance.setString("name", name);
+    PreferencesManager.instance.setString("email", email);
+    PreferencesManager.instance.setString("password", password);
   }
 }

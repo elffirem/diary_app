@@ -2,6 +2,7 @@ import 'package:diary_app/base/firebase/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+//taqanarslan
 class FirebaseAuthManager {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   static FirebaseAuthManager? _instance;

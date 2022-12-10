@@ -10,12 +10,7 @@ class LoginRegisterButton extends StatefulWidget {
   TextEditingController nameController;
   TextEditingController emailController;
   TextEditingController passwordController;
-  LoginRegisterButton(
-      {super.key,
-      required this.type,
-      required this.nameController,
-      required this.emailController,
-      required this.passwordController});
+  LoginRegisterButton({super.key, required this.type, required this.nameController, required this.emailController, required this.passwordController});
 
   @override
   State<LoginRegisterButton> createState() => _LoginRegisterButtonState();
@@ -48,48 +43,29 @@ class _LoginRegisterButtonState extends State<LoginRegisterButton> {
   }
 
   void registerFunc() async {
-    if (widget.emailController.text.isNotEmpty &&
-        widget.nameController.text.isNotEmpty &&
-        widget.passwordController.text.isNotEmpty) {
-      if (await FirebaseAuthManager.instance.register(
-              name: widget.nameController.text,
-              email: widget.emailController.text,
-              password: widget.passwordController.text,
-              context: context) ==
-          1) {
-        viewmodel.dataSave(widget.nameController, widget.emailController,
-            widget.passwordController);
+    if (widget.emailController.text.isNotEmpty && widget.nameController.text.isNotEmpty && widget.passwordController.text.isNotEmpty) {
+      if (await FirebaseAuthManager.instance.register(name: widget.nameController.text, email: widget.emailController.text, password: widget.passwordController.text, context: context) == 1) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CalendarPageView()),
         );
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please fill all blanks correctly")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all blanks correctly")));
     }
   }
 
   void loginFunc() async {
-    print("helo");
-    if (widget.emailController.text.isNotEmpty &&
-        widget.nameController.text.isNotEmpty &&
-        widget.passwordController.text.isNotEmpty) {
-      if (await FirebaseAuthManager.instance.login(
-              email: widget.emailController.text,
-              password: widget.passwordController.text,
-              context: context) ==
-          1) {
-        viewmodel.dataSave(widget.nameController, widget.emailController,
-            widget.passwordController);
+    if (widget.emailController.text.isNotEmpty && widget.nameController.text.isNotEmpty && widget.passwordController.text.isNotEmpty) {
+      if (await FirebaseAuthManager.instance.login(email: widget.emailController.text, password: widget.passwordController.text, context: context) == 1) {
+        viewmodel.dataSave(widget.nameController.text, widget.emailController.text, widget.passwordController.text);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const CalendarPageView()),
         );
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please fill all blanks correctly")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all blanks correctly")));
     }
   }
 }
