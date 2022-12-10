@@ -1,16 +1,14 @@
 # diary_app
 
-A new Flutter project.
+It's an app which allows users to record their daily experiences with a diary. They can share whatever they want with this diary as writing for now (media usage feature will be added), and they can take a look back of their records on the calendar. Application designed very simple and lovely to make users feel more comfortable while writing down their diaries.
 
-## Getting Started
+## Work Sharing
 
-This project is a starting point for a Flutter application.
+#### UI Design ####
+*Zehra Kamışlı* | *Elif İrem Külcü*
 
-A few resources to get you started if this is your first Flutter project:
+#### Front-End ####
+*Elif İrem Külcü*
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### Back-End ####
+*Atakan Arslan* | *Zehra Kamışlı* 
