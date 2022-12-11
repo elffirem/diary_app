@@ -45,20 +45,12 @@ class _CalendarPageViewState extends State<CalendarPageView> {
                 child: Center(
                   child: TableCalendar(
                     daysOfWeekStyle: const DaysOfWeekStyle(
-                        weekdayStyle: TextStyle(
-                            color: ColorUtility.calendarTextStyle,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Lato"),
-                        weekendStyle: TextStyle(
-                            color: ColorUtility.calendarTextStyle,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Lato")),
+                        weekdayStyle: TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
+                        weekendStyle: TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato")),
                     weekendDays: const [7],
                     locale: 'en_US',
                     focusedDay: DateTime.now(),
-                    firstDay: DateTime.now(),
+                    firstDay: DateTime.now().subtract(const Duration(days: 30)),
                     lastDay: DateTime.now().add(const Duration(days: 30)),
                     calendarFormat: format,
                     onFormatChanged: (CalendarFormat format) {
@@ -96,47 +88,27 @@ class _CalendarPageViewState extends State<CalendarPageView> {
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      outsideTextStyle: const TextStyle(
-                          color: Color(0xffC2C2C2),
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Lato"),
+                      outsideTextStyle: const TextStyle(color: Color(0xffC2C2C2), fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
                       disabledDecoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      disabledTextStyle: const TextStyle(
-                          color: ColorUtility.calendarTextStyle,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Lato"),
+                      disabledTextStyle: const TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
                       outsideDaysVisible: false,
-                      weekendTextStyle: const TextStyle(
-                          color: ColorUtility.calendarTextStyle,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Lato"),
+                      weekendTextStyle: const TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
                       isTodayHighlighted: false,
                       selectedDecoration: BoxDecoration(
                         color: ColorUtility.backGroundColor,
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      selectedTextStyle: const TextStyle(
-                          color: ColorUtility.calendarTextStyle,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Lato"),
+                      selectedTextStyle: const TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 12.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
                       todayDecoration: BoxDecoration(
                         color: Colors.grey,
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      defaultTextStyle: const TextStyle(
-                          color: ColorUtility.calendarTextStyle,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "Lato"),
+                      defaultTextStyle: const TextStyle(color: ColorUtility.calendarTextStyle, fontSize: 14.0, fontWeight: FontWeight.w500, fontFamily: "Lato"),
                       defaultDecoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         borderRadius: BorderRadius.circular(8.0),
@@ -146,11 +118,7 @@ class _CalendarPageViewState extends State<CalendarPageView> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    headerStyle: const HeaderStyle(
-                        titleTextStyle: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                        formatButtonVisible: false,
-                        titleCentered: true),
+                    headerStyle: const HeaderStyle(titleTextStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 16), formatButtonVisible: false, titleCentered: true),
                   ),
                 ),
               ),
