@@ -1,4 +1,4 @@
-import 'package:diary_app/base/shared/preferences_manager.dart';
+import 'package:diary_app/base/services/shared/preferences_manager.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 
 class DiaryPageViewmodel {

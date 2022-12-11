@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:diary_app/base/base_utility.dart';
-import 'package:diary_app/base/firebase/auth.dart';
-import 'package:diary_app/base/firebase/firestore.dart';
+import 'package:diary_app/base/services/firebase/auth.dart';
+import 'package:diary_app/base/services/firebase/firestore.dart';
+import 'package:diary_app/base/services/firebase/storage.dart';
+import 'package:diary_app/base/services/storage/storage_manager.dart';
 import 'package:diary_app/components/save_button.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
+import 'package:diary_app/ui/view/diary_showphotos_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,23 +21,25 @@ class DiaryPageView extends StatefulWidget {
 
 class _DiaryPageViewState extends State<DiaryPageView> {
   bool isEmpty = true;
+  int photoNumber = 0;
   String formattedDate = "";
   @override
   void initState() {
     formattedDate = dateFormat.format(widget.date);
-    FirestoreManager.instance
-        .firestoreGetDocumentInDocument(
-            collectionID: "user",
-            collectionID2: "diaries",
-            docID: FirebaseAuthManager.userData["userID"],
-            docID2: formattedDate)
-        .then((value) {
-      if (value != null) {
-        isEmpty = false;
-        Map text = value as Map;
-        diaryText.text = text["diaryText"];
-      } else {}
-    });
+    try {
+      FirestoreManager.instance.firestoreGetDocumentInDocument(collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate).then((value) {
+        if (value != null) {
+          isEmpty = false;
+          Map data = value as Map;
+          if (data["photoNumber"] != null) {
+            photoNumber = data["photoNumber"];
+          }
+          if (data["diaryText"] != null) {
+            diaryText.text = data["diaryText"];
+          }
+        } else {}
+      });
+    } catch (e) {}
     super.initState();
   }
 
@@ -74,28 +81,55 @@ class _DiaryPageViewState extends State<DiaryPageView> {
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 60),
-                child: Button(
-                  onTap: () async {
-                    if (isEmpty == true) {
-                      await FirestoreManager.instance.firestoreSetDocInDocAsMap(
-                          collectionID: "user",
-                          collectionID2: "diaries",
-                          docID: FirebaseAuthManager.userData["userID"],
-                          docID2: formattedDate,
-                          data: {"diaryText": diaryText.text});
-                    } else {
-                      await FirestoreManager.instance
-                          .firestoreUpdateDocInDocAsMap(
-                              collectionID: "user",
-                              collectionID2: "diaries",
-                              docID: FirebaseAuthManager.userData["userID"],
-                              docID2: formattedDate,
-                              data: {"diaryText": diaryText.text});
-                    }
-                  },
-                ),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DiaryButton(
+                        title: "Add Photo",
+                        onTap: () async {
+                          File? file = await StorageManager.instance.pickPhoto();
+                          if (file != null) {
+                            if (await FirebaseStorageManager.instance.uploadFile("/${FirebaseAuthManager.userData["userID"]}/photos/$formattedDate/$photoNumber", file) != null) {
+                              photoNumber++;
+                              if (isEmpty == true && photoNumber == 0) {
+                                await FirestoreManager.instance.firestoreSetDocInDocAsMap(
+                                    collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate, data: {"photoNumber": photoNumber});
+                              } else {
+                                await FirestoreManager.instance.firestoreUpdateDocInDocAsMap(
+                                    collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate, data: {"photoNumber": photoNumber});
+                              }
+                            }
+                          }
+                        },
+                      ),
+                      DiaryButton(
+                        title: "Show Photos",
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DiaryShowPhotosView(
+                                  date: formattedDate,
+                                  photoNumber: photoNumber,
+                                ),
+                              ));
+                        },
+                      ),
+                      DiaryButton(
+                        title: "Save Diary",
+                        onTap: () async {
+                          if (isEmpty == true) {
+                            await FirestoreManager.instance.firestoreSetDocInDocAsMap(
+                                collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate, data: {"diaryText": diaryText.text});
+                          } else {
+                            await FirestoreManager.instance.firestoreUpdateDocInDocAsMap(
+                                collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate, data: {"diaryText": diaryText.text});
+                          }
+                        },
+                      ),
+                    ],
+                  )),
             )
           ],
         ),
@@ -130,8 +164,7 @@ class _DiaryPageViewState extends State<DiaryPageView> {
         padding: const EdgeInsets.only(right: 20, top: 20),
         child: Text(
           formattedDate.toString(),
-          style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );

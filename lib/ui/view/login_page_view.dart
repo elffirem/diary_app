@@ -1,6 +1,6 @@
 import 'package:diary_app/base/base_utility.dart';
-import 'package:diary_app/base/firebase/auth.dart';
-import 'package:diary_app/base/shared/preferences_manager.dart';
+import 'package:diary_app/base/services/firebase/auth.dart';
+import 'package:diary_app/base/services/shared/preferences_manager.dart';
 import 'package:diary_app/components/login_register_button.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 import 'package:diary_app/ui/view/calendar_page_view.dart';

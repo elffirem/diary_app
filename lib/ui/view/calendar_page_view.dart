@@ -1,5 +1,5 @@
 import 'package:diary_app/base/base_utility.dart';
-import 'package:diary_app/base/firebase/auth.dart';
+import 'package:diary_app/base/services/firebase/auth.dart';
 import 'package:diary_app/ui/view/diary_page_view.dart';
 import 'package:flutter/material.dart';
 

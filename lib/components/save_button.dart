@@ -2,15 +2,16 @@ import 'package:diary_app/base/base_utility.dart';
 import 'package:diary_app/ui/viewmodel/diary_page_viewmodel.dart';
 import 'package:flutter/material.dart';
 
-class Button extends StatefulWidget {
+class DiaryButton extends StatefulWidget {
   final Function() onTap;
-  const Button({super.key, required this.onTap});
+  final String title;
+  const DiaryButton({super.key, required this.onTap, required this.title});
 
   @override
-  State<Button> createState() => _ButtonState();
+  State<DiaryButton> createState() => _DiaryButtonState();
 }
 
-class _ButtonState extends State<Button> {
+class _DiaryButtonState extends State<DiaryButton> {
   DiaryPageViewmodel viewmodel = DiaryPageViewmodel();
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,12 @@ class _ButtonState extends State<Button> {
             color: ColorUtility.blueGrey,
             borderRadius: BorderRadius.circular(17),
           ),
-          height: viewmodel.model.height * 1 / 2,
+          height: viewmodel.model.height * 3 / 4,
           width: viewmodel.model.width / 4,
-          child: const Center(
+          child: Center(
             child: Text(
-              "SAVE",
-              style: TextStyle(color: ColorUtility.pageColor),
+              widget.title,
+              style: const TextStyle(color: ColorUtility.pageColor),
             ),
           )),
     );

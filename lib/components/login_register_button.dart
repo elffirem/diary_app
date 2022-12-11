@@ -1,5 +1,5 @@
 import 'package:diary_app/base/base_utility.dart';
-import 'package:diary_app/base/firebase/auth.dart';
+import 'package:diary_app/base/services/firebase/auth.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 import 'package:diary_app/ui/view/calendar_page_view.dart';
 import 'package:diary_app/ui/viewmodel/diary_page_viewmodel.dart';

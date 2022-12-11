@@ -1,4 +1,4 @@
-import 'package:diary_app/base/firebase/firestore.dart';
+import 'package:diary_app/base/services/firebase/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
