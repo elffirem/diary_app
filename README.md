@@ -5,10 +5,10 @@ It's an app which allows users to record their daily experiences with a diary. T
 ## Work Sharing
 
 #### UI Design ####
-*Zehra Kamışlı* | *Elif İrem Külcü*
+*Elif İrem Külcü*
 
 #### Front-End ####
 *Elif İrem Külcü*
 
 #### Back-End ####
-*Atakan Arslan* | *Zehra Kamışlı* 
+*Atakan Arslan*
