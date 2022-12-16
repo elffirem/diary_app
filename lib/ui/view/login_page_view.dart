@@ -30,7 +30,6 @@ class _LoginPageViewState extends State<LoginPageView> {
   }
 
   void prepareLocalStorage() {
-    print(PreferencesManager.instance.getString("name"));
     nameController.text = PreferencesManager.instance.getString("name") ?? "";
     emailController.text = PreferencesManager.instance.getString("email") ?? "";
     passwordController.text = PreferencesManager.instance.getString("password") ?? "";

@@ -1,24 +1,25 @@
-import 'package:diary_app/base/services/firebase/storage.dart';
+
 import 'package:flutter/material.dart';
-import '../../base/services/firebase/auth.dart';
-import '../../base/services/firebase/firestore.dart';
 
 class DiaryShowPhotosView extends StatefulWidget {
   String date;
   int photoNumber;
-  DiaryShowPhotosView({super.key, required this.photoNumber, required this.date});
+  List<String> urlList;
+  DiaryShowPhotosView({super.key, required this.photoNumber, required this.date, required this.urlList});
 
   @override
   State<DiaryShowPhotosView> createState() => _DiaryShowPhotosViewState();
 }
 
 class _DiaryShowPhotosViewState extends State<DiaryShowPhotosView> {
-  List<String> urlList = [];
   @override
   void initState() {
-    for (int i = 0; i < widget.photoNumber; i++) {
-      FirebaseStorageManager.instance.getDownloadLink("/${FirebaseAuthManager.userData["userID"]}/photos/${widget.date}/$i").then((value) => urlList.add(value));
-    }
+    Future.delayed(
+      Duration(seconds: 3),
+      () {
+        for (int i = 0; i < widget.photoNumber; i++) {}
+      },
+    );
     super.initState();
   }
 
@@ -31,7 +32,7 @@ class _DiaryShowPhotosViewState extends State<DiaryShowPhotosView> {
             children: List.generate(widget.photoNumber, (index) {
               return Container(
                 padding: EdgeInsets.only(bottom: 10),
-                child: Image.network(urlList[index]),
+                child: Image.network(widget.urlList[index]),
               );
             }),
           ),

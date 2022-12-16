@@ -13,9 +13,9 @@ class FirebaseStorageManager {
   FirebaseStorageManager._init();
 
   Future<String> getDownloadLink(String path) async {
-    Reference fileRef = FirebaseStorage.instance.ref().child(path);
-    var url = await fileRef.getDownloadURL();
-    return url;
+    final storageRef = FirebaseStorage.instance.ref();
+    final imageUrl = await storageRef.child(path).getDownloadURL();
+    return imageUrl;
   }
 
   Future deleteItem(String path) async {

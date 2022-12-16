@@ -5,7 +5,7 @@ import 'package:diary_app/base/services/firebase/auth.dart';
 import 'package:diary_app/base/services/firebase/firestore.dart';
 import 'package:diary_app/base/services/firebase/storage.dart';
 import 'package:diary_app/base/services/storage/storage_manager.dart';
-import 'package:diary_app/components/save_button.dart';
+import 'package:diary_app/components/diary_button.dart';
 import 'package:diary_app/ui/model/diary_page_model.dart';
 import 'package:diary_app/ui/view/diary_showphotos_view.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +92,7 @@ class _DiaryPageViewState extends State<DiaryPageView> {
                           if (file != null) {
                             if (await FirebaseStorageManager.instance.uploadFile("/${FirebaseAuthManager.userData["userID"]}/photos/$formattedDate/$photoNumber", file) != null) {
                               photoNumber++;
-                              if (isEmpty == true && photoNumber == 0) {
+                              if (isEmpty == true) {
                                 await FirestoreManager.instance.firestoreSetDocInDocAsMap(
                                     collectionID: "user", collectionID2: "diaries", docID: FirebaseAuthManager.userData["userID"], docID2: formattedDate, data: {"photoNumber": photoNumber});
                               } else {
@@ -105,15 +105,21 @@ class _DiaryPageViewState extends State<DiaryPageView> {
                       ),
                       DiaryButton(
                         title: "Show Photos",
-                        onTap: () {
+                        onTap: () async {
+                          List<String> urlList = [];
+                          for (int i = 0; i < photoNumber; i++) {
+                            await FirebaseStorageManager.instance.getDownloadLink("/${FirebaseAuthManager.userData["userID"]}/photos/$formattedDate/$i").then((value) => urlList.add(value));
+                          }
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DiaryShowPhotosView(
-                                  date: formattedDate,
-                                  photoNumber: photoNumber,
-                                ),
-                              ));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DiaryShowPhotosView(
+                                date: formattedDate,
+                                photoNumber: photoNumber,
+                                urlList: urlList,
+                              ),
+                            ),
+                          );
                         },
                       ),
                       DiaryButton(
